@@ -11,7 +11,7 @@
     <modules>
         <module>eureka</module>
         <module>auth</module>
-        <module>config</module>
+        <module>order</module>
     </modules>
 
 
