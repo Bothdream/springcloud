@@ -16,16 +16,19 @@ import org.springframework.security.oauth2.provider.code.AuthorizationCodeServic
 import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServer extends AuthorizationServerConfigurerAdapter  {
     //token保存方式
     @Autowired
-    private TokenStore tokenStore;
+    private JwtAccessTokenConverter accessTokenConverter;
     //客户端详情服务
     @Autowired
     private ClientDetailsService clientDetailsService;
@@ -35,6 +38,8 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter  {
     //认证管理器
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private TokenStore tokenStore;
 
     //令牌管理服务
     @Bean
@@ -42,7 +47,11 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter  {
         DefaultTokenServices services = new DefaultTokenServices();
         services.setClientDetailsService(clientDetailsService);//客户端详情服务
         services.setSupportRefreshToken(true);//支持令牌刷新
-        services.setTokenStore(tokenStore);//令牌存储策略
+        services.setTokenStore(tokenStore);
+        //令牌增强
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(accessTokenConverter));
+        services.setTokenEnhancer(tokenEnhancerChain);
         services.setAccessTokenValiditySeconds(7200);//令牌默认有效期2小时
         services.setRefreshTokenValiditySeconds(259200);//刷新令牌默认有效期3天
         return services;

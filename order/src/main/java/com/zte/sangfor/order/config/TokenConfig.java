@@ -1,4 +1,4 @@
-package com.zte.sangfor.auth.config;
+package com.zte.sangfor.order.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,4 +24,3 @@ public class TokenConfig {
         return converter;
     }
 }
-
