@@ -18,16 +18,16 @@ public class ResouceServerConfig extends ResourceServerConfigurerAdapter {
 
     //资源ID和授权服务的ID要一致
     private static final String RESOURCE_ID = "res1";
-
+    @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.resourceId(RESOURCE_ID).tokenStore(tokenStore)
                 .stateless(true);
     }
-
+    @Override
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**")
+                .antMatchers("/order/**")
                 .access("#oauth2.hasScope('all')")//scope和授权服务的ID要一致
                 .and().csrf().disable();
     }

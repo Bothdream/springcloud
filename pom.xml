@@ -12,6 +12,7 @@
         <module>eureka</module>
         <module>auth</module>
         <module>order</module>
+        <module>gateway</module>
     </modules>
 
 

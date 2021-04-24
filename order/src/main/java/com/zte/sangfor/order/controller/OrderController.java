@@ -11,4 +11,11 @@ public class OrderController {
     public String r1() {
         return "访问资源1";
     }
+
+
+    @GetMapping(value = "/r/r2")
+    @PreAuthorize("hasAnyAuthority('p3')")
+    public String r2() {
+        return "访问资源2";
+    }
 }
